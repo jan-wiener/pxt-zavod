@@ -54,17 +54,19 @@ radio.onReceivedString(function(receivedString: string) {
 Sensors.OnLightDrop(function () {
 
     if (mode == STATE.ready && whoAmI == WHOAMI.start) {
+        music.playTone(100, 200)
         mode = STATE.running
         radio.sendValue("start", 1)
 
     } else if (mode == STATE.running && whoAmI == WHOAMI.end) {
+        music.playTone(100, 200)
         mode = STATE.finish
         totalTime = control.millis() - startTime
-        console.log(`Závod trval ${totalTime}`)
+        console.log(`Závod trval ${totalTime}`) //basic.shownumber když to nefunguje
         radio.sendValue("time", totalTime)
 
     } else if (mode == STATE.finish) {
-        console.log("")
+        console.log("n")
 
     }
 })
@@ -73,6 +75,7 @@ input.onButtonPressed(Button.A, function() {
     if (whoAmI == WHOAMI.start && mode == STATE.finish) {
         basic.pause(2000)
         mode = STATE.ready
+        music.playTone(200, 200)
 
     } else if (whoAmI != WHOAMI.end && mode == STATE.finish) {
         whoAmI = WHOAMI.start
@@ -80,6 +83,7 @@ input.onButtonPressed(Button.A, function() {
         radio.sendString("startSet")
         basic.pause(2000)
         mode = STATE.ready
+        music.playTone(200, 200)
 
     } else if (whoAmI == WHOAMI.start && mode == STATE.ready) {
         mode = STATE.finish
