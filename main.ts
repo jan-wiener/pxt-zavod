@@ -1,6 +1,8 @@
 
 let status = 0
 radio.setGroup(76)
+radio.setTransmitPower(7)
+//radio.setFrequencyBand()
 enum STATE {
     ready = 0,
     running = 1,
@@ -83,7 +85,7 @@ Sensors.OnLightDrop(function () {
         music.playTone(100, 200)
         mode = STATE.finish
         totalTime = control.millis() - startTime // calculate total time
-        totalTime += timeCalib // add send time
+        //totalTime += timeCalib // add send time
         totalTime /= 1000
         totalTime = Math.round(totalTime * 100) / 100
         console.log(`Závod trval ${totalTime}`) //basic.shownumber když to nefunguje
