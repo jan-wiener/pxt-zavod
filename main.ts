@@ -34,7 +34,7 @@ radio.onReceivedValue(function(name: string, value: number) {
     } else if (name == "time") { // to start; total time sent from end to start
         mode = STATE.finish
         totalTime = value
-        totalTime = Math.round(totalTime)
+        //totalTime = Math.round(totalTime)
         console.log(`Závod trval ${totalTime}`)
         basic.showNumber(totalTime)
     }
@@ -81,7 +81,7 @@ Sensors.OnLightDrop(function () {
         totalTime = control.millis() - startTime // calculate total time
         totalTime += timeCalib // add send time
         totalTime /= 1000
-        totalTime = Math.round(totalTime)
+        totalTime = Math.round(totalTime * 100) / 100
         console.log(`Závod trval ${totalTime}`) //basic.shownumber když to nefunguje
         radio.sendValue("time", totalTime)
 
