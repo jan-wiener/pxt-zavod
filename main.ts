@@ -12,6 +12,9 @@ enum WHOAMI {
     end = 1
 }
 
+let s = IconNames.Triangle
+let e = IconNames.Square
+
 let whoAmI: WHOAMI
 console.log(whoAmI)
 
@@ -42,7 +45,7 @@ radio.onReceivedValue(function(name: string, value: number) {
 radio.onReceivedString(function(receivedString: string) {
     if (receivedString == "startSet") { //to end; set state to end
         whoAmI = WHOAMI.end
-        basic.showNumber(2)
+        basic.showIcon(e)
         music.playTone(100, 200)
         radio.sendString("calib") // return calib 
 
@@ -70,7 +73,7 @@ radio.onReceivedString(function(receivedString: string) {
 
 Sensors.OnLightDrop(function () {
     if (mode == STATE.ready && whoAmI == WHOAMI.start) { //begin race on WHOAMI.start if ready 
-        basic.showNumber(mode)
+        //basic.showIcon(s)
         music.playTone(100, 200)
         mode = STATE.running
         radio.sendString("start") // send start info
@@ -83,7 +86,9 @@ Sensors.OnLightDrop(function () {
         totalTime /= 1000
         totalTime = Math.round(totalTime * 100) / 100
         console.log(`Závod trval ${totalTime}`) //basic.shownumber když to nefunguje
+        basic.showNumber(totalTime)
         radio.sendValue("time", totalTime)
+        basic.showIcon(e)
 
     } else if (mode == STATE.finish) {
         console.log("n")
@@ -94,6 +99,7 @@ Sensors.OnLightDrop(function () {
 
 input.onButtonPressed(Button.A, function() {
     if (whoAmI == WHOAMI.start && mode == STATE.finish) {
+        basic.showIcon(s)
         basic.pause(2000)
         mode = STATE.ready
         music.playTone(200, 200)
@@ -102,7 +108,7 @@ input.onButtonPressed(Button.A, function() {
 
     } else if (whoAmI != WHOAMI.end && mode == STATE.finish) {
         whoAmI = WHOAMI.start
-        basic.showNumber(1)
+        basic.showIcon(s)
         timeCalib = control.millis() // 
         music.playTone(100, 200)
         radio.sendString("startSet")
