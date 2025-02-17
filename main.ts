@@ -1,6 +1,6 @@
 
 let status = 0
-
+radio.setGroup(76)
 enum STATE {
     ready = 0,
     running = 1,
@@ -34,7 +34,9 @@ radio.onReceivedValue(function(name: string, value: number) {
     } else if (name == "time") { // to start; total time sent from end to start
         mode = STATE.finish
         totalTime = value
+        totalTime = Math.round(totalTime)
         console.log(`Závod trval ${totalTime}`)
+        basic.showNumber(totalTime)
     }
 })
 radio.onReceivedString(function(receivedString: string) {
@@ -67,8 +69,8 @@ radio.onReceivedString(function(receivedString: string) {
 // WARNING: if the race takes less time than to send a str, it will not work
 
 Sensors.OnLightDrop(function () {
-
     if (mode == STATE.ready && whoAmI == WHOAMI.start) { //begin race on WHOAMI.start if ready 
+        basic.showNumber(mode)
         music.playTone(100, 200)
         mode = STATE.running
         radio.sendString("start") // send start info
@@ -78,6 +80,8 @@ Sensors.OnLightDrop(function () {
         mode = STATE.finish
         totalTime = control.millis() - startTime // calculate total time
         totalTime += timeCalib // add send time
+        totalTime /= 1000
+        totalTime = Math.round(totalTime)
         console.log(`Závod trval ${totalTime}`) //basic.shownumber když to nefunguje
         radio.sendValue("time", totalTime)
 
@@ -93,6 +97,8 @@ input.onButtonPressed(Button.A, function() {
         basic.pause(2000)
         mode = STATE.ready
         music.playTone(200, 200)
+        console.log(mode)
+        console.log(whoAmI)
 
     } else if (whoAmI != WHOAMI.end && mode == STATE.finish) {
         whoAmI = WHOAMI.start
