@@ -40,6 +40,7 @@ radio.onReceivedValue(function(name: string, value: number) {
         //totalTime = Math.round(totalTime)
         console.log(`Závod trval ${totalTime}`)
         basic.showNumber(totalTime)
+        basic.showIcon(s)
     }
 })
 radio.onReceivedString(function(receivedString: string) {
@@ -96,7 +97,10 @@ Sensors.OnLightDrop(function () {
     }
 })
 
-
+input.onButtonPressed(Button.B, function() {
+    Sensors.SetLightLevel()
+    music.playTone(200, 200)
+})
 input.onButtonPressed(Button.A, function() {
     if (whoAmI == WHOAMI.start && mode == STATE.finish) {
         basic.showIcon(s)
